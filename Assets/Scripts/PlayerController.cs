@@ -28,8 +28,6 @@ public class PlayerController : MonoBehaviour
     private InputPlayerSystem playerInput;
     
     private SpriteRenderer spriteRenderer;
-    
-    [SerializeField] private int score;
 
     private void Awake()
     {
@@ -99,11 +97,6 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         TrySetGrounded(other, true);
-        if (other.gameObject.CompareTag("Coin"))
-        {
-            score++;
-            Destroy(other.gameObject);
-        }
     }
 
     private void OnCollisionExit2D(Collision2D other)
