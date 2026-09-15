@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpBufferTime = 0.12f;
     
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private LayerMask coinMask;
     
     private Animator animator;
     private Rigidbody2D rigidBody;
@@ -27,6 +28,8 @@ public class PlayerController : MonoBehaviour
     private InputPlayerSystem playerInput;
     
     private SpriteRenderer spriteRenderer;
+    
+    [SerializeField] private int score;
 
     private void Awake()
     {
@@ -47,13 +50,11 @@ public class PlayerController : MonoBehaviour
     {
         playerInput.Enable();
         playerInput.Player.Jump.performed += OnJumpPressed;
-        playerInput.Player.Attack.performed += Attack;
     }
 
     private void OnDisable()
     {
         playerInput.Player.Jump.performed -= OnJumpPressed;
-        playerInput.Player.Attack.performed -= Attack;
         playerInput.Disable();
     }
 
@@ -98,6 +99,11 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         TrySetGrounded(other, true);
+        if (other.gameObject.CompareTag("Coin"))
+        {
+            score++;
+            Destroy(other.gameObject);
+        }
     }
 
     private void OnCollisionExit2D(Collision2D other)
@@ -144,10 +150,5 @@ public class PlayerController : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
-    }
-
-    private void Attack(InputAction.CallbackContext ctx)
-    {
-        
     }
 }
